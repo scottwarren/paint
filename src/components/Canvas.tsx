@@ -6,7 +6,7 @@ type CanvasProps = {
   draw: (context: CanvasRenderingContext2D) => void
 }
 
-function Canvas({ draw, ...rest }: CanvasProps) {
+function Canvas({ draw, ...rest }: CanvasProps): React.ReactElement {
   const canvasRef = useCanvas(draw)
 
   return <canvas ref={canvasRef} {...rest} />

@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import Statistics from './pages/Statistics'
 import Paint from './pages/Paint'
 
-function Routes() {
+function Routes(): React.ReactElement {
   return (
     <Switch>
       <Route path='/statistics'>

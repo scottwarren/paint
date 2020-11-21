@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Statistics() {
+function Statistics(): React.ReactElement {
   return <div>Statistics Page</div>
 }
 

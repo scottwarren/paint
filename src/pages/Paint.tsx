@@ -2,7 +2,7 @@ import React from 'react'
 
 import Canvas from '../components/Canvas'
 
-const draw = (ctx: CanvasRenderingContext2D) => {
+function draw(ctx: CanvasRenderingContext2D): void {
   ctx.fillStyle = '#000000'
 
   ctx.beginPath()
@@ -11,7 +11,7 @@ const draw = (ctx: CanvasRenderingContext2D) => {
   ctx.fill()
 }
 
-function Paint() {
+function Paint(): React.ReactElement {
   return <Canvas draw={draw} />
 }
 
