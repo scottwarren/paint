@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 
 type DrawCallbackType = (context: CanvasRenderingContext2D) => void;
 
-const useCanvas = (draw: DrawCallbackType) => {
+function useCanvas(draw: DrawCallbackType) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -24,6 +24,6 @@ const useCanvas = (draw: DrawCallbackType) => {
   }, [draw, canvasRef]);
 
   return canvasRef;
-};
+}
 
 export default useCanvas;

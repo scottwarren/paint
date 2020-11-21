@@ -1,18 +1,18 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import Canvas from "./components/Canvas";
-
-const draw = (ctx: CanvasRenderingContext2D) => {
-  ctx.fillStyle = "#000000";
-
-  ctx.beginPath();
-
-  ctx.arc(50, 100, 20, 0, 2 * Math.PI);
-  ctx.fill();
-};
+import Routes from "./Routes";
+import Navigation from "./layout/Navigation";
 
 function App() {
-  return <Canvas draw={draw} />;
+  return (
+    <Router>
+      <div>
+        <Navigation />
+        <Routes />
+      </div>
+    </Router>
+  );
 }
 
 export default App;

@@ -6,10 +6,10 @@ type CanvasProps = {
   draw: (context: CanvasRenderingContext2D) => void;
 };
 
-const Canvas = ({ draw, ...rest }: CanvasProps) => {
+function Canvas({ draw, ...rest }: CanvasProps) {
   const canvasRef = useCanvas(draw);
 
   return <canvas ref={canvasRef} {...rest} />;
-};
+}
 
 export default Canvas;
