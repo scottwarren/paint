@@ -6,4 +6,4 @@ module.exports = {
   useTabs: false,
   printWidth: 80,
   jsxBracketSameLine: false,
-}
+};

@@ -1,8 +1,8 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-import Statistics from './pages/Statistics'
-import Paint from './pages/Paint'
+import Statistics from './pages/Statistics';
+import Paint from './pages/Paint';
 
 function Routes(): React.ReactElement {
   return (
@@ -14,7 +14,7 @@ function Routes(): React.ReactElement {
         <Paint />
       </Route>
     </Switch>
-  )
+  );
 }
 
-export default Routes
+export default Routes;
