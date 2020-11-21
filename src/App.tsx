@@ -1,24 +1,18 @@
 import React from "react";
-import "./App.css";
+
+import Canvas from "./components/Canvas";
+
+const draw = (ctx: CanvasRenderingContext2D) => {
+  ctx.fillStyle = "#000000";
+
+  ctx.beginPath();
+
+  ctx.arc(50, 100, 20, 0, 2 * Math.PI);
+  ctx.fill();
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <Canvas draw={draw} />;
 }
 
 export default App;
