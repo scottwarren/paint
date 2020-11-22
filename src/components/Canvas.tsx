@@ -76,12 +76,19 @@ function Canvas(): React.ReactElement {
     context.closePath();
   };
 
+  // Make sure that the pen tool doesn't get stuck on if the user exits the viewport
+  const handleMouseLeave = () => {
+    isMouseDown = false;
+    context.closePath();
+  };
+
   return (
     <PaintingCanvas
       ref={canvasRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
     />
   );
 }
