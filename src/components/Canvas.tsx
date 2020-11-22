@@ -35,7 +35,7 @@ function Canvas(): React.ReactElement {
     }
 
     // Setting the Canvas height/width so it scales appopriately and doesn't reset to default (300px)
-    // Required because I'm using a non-fixed width
+    // Required because I'm using viewport units (rather than a fixed value e.g. px)
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
@@ -44,12 +44,8 @@ function Canvas(): React.ReactElement {
 
   // const handleMouseDown = (ev: React.MouseEvent) => {
   const handleMouseDown = () => {
-    if (!context) {
-      console.error('no context yet...?');
-      return;
-    }
-
     isMouseDown = true;
+    context.beginPath();
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
@@ -69,40 +65,15 @@ function Canvas(): React.ReactElement {
 
     const { x, y } = getMousePos(canvas, ev);
 
-    context.beginPath();
-    // context.moveTo(0, 0);
     context.lineTo(x, y);
     context.stroke();
-
-    context.rect(x, y, LINE_SIZE, LINE_SIZE);
-    context.fill();
-
-    context.closePath();
-
-    // x = newX;
-    // y = newY;
+    context.moveTo(x, y);
   };
 
   const handleMouseUp = () => {
     // const handleMouseUp = (ev: React.MouseEvent) => {
     isMouseDown = false;
-
-    // const { clientX, clientY } = ev;
-    // console.log('clientX', clientX);
-    // console.log('clientY', clientY);
-
-    // if (!context) {
-    //   console.error('no context yet...?');
-    //   return;
-    // }
-    // context.beginPath();
-    // context.moveTo(50, 50);
-    // context.lineTo(50, 50);
-    // context.stroke();
-
-    // // finish path?
-
-    // context.closePath();
+    context.closePath();
   };
 
   return (
