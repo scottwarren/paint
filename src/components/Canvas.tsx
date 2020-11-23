@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChromePicker } from 'react-color';
+import { ChromePicker, RGBColor } from 'react-color';
 import styled from 'styled-components';
 
 import getMousePos from '../utils/get-mouse-pos';
@@ -10,9 +10,20 @@ const PaintingCanvas = styled.canvas`
   height: 800px;
 `;
 
+const DEFAULT_RGB = {
+  r: 0,
+  g: 0,
+  b: 0,
+  a: 1,
+};
+
+function getCSSColorFromRGBA({ r, g, b, a }: RGBColor) {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
 function Canvas(): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [color, setColor] = useState('rgba(0, 0, 0, 1)');
+  const [color, setColor] = useState<RGBColor>(DEFAULT_RGB);
 
   let isMouseDown = false;
 
@@ -38,13 +49,16 @@ function Canvas(): React.ReactElement {
 
   const handleMouseDown = () => {
     isMouseDown = true;
+
     if (!context) {
       console.error('no context yet...');
       debugger;
       return;
     }
+
     context.beginPath();
-    context.strokeStyle = color;
+
+    context.strokeStyle = getCSSColorFromRGBA(color);
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
@@ -63,8 +77,6 @@ function Canvas(): React.ReactElement {
     }
 
     const { x, y } = getMousePos(canvas, ev);
-
-    context.strokeStyle = color;
     context.lineTo(x, y);
     context.stroke();
     context.moveTo(x, y);
@@ -73,34 +85,18 @@ function Canvas(): React.ReactElement {
   const handleMouseUp = () => {
     isMouseDown = false;
 
-    if (!context) {
-      console.error('no context yet...');
-      debugger;
-      return;
-    }
-
-    context.closePath();
+    context?.closePath();
   };
 
   // Make sure that the pen tool doesn't get stuck on if the user exits the viewport
   const handleMouseLeave = () => {
-    if (!context) {
-      console.error('no context yet...');
-      debugger;
-      return;
-    }
     isMouseDown = false;
-    context.closePath();
+    context?.closePath();
   };
 
   return (
     <>
-      <ChromePicker
-        color={color}
-        onChange={({ rgb: { r, g, b, a } }) => {
-          setColor(`rgba(${r}, ${g}, ${b}, ${a})`);
-        }}
-      />
+      <ChromePicker color={color} onChange={({ rgb }) => setColor(rgb)} />
       <PaintingCanvas
         ref={canvasRef}
         onMouseDown={handleMouseDown}
