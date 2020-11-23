@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ChromePicker } from 'react-color';
 import styled from 'styled-components';
 
+import getMousePos from '../utils/get-mouse-pos';
+
 const PaintingCanvas = styled.canvas`
   width: 100vw;
   // TODO: make it fit height of container
@@ -9,18 +11,6 @@ const PaintingCanvas = styled.canvas`
 `;
 
 const LINE_SIZE = 2;
-
-// // TODO: Get colour from pallete
-// const STROKE_STYLE = '#000000';
-
-function getMousePos(canvas: HTMLCanvasElement, ev: React.MouseEvent) {
-  const rect = canvas.getBoundingClientRect();
-
-  return {
-    x: ev.clientX - rect.left,
-    y: ev.clientY - rect.top,
-  };
-}
 
 function Canvas(): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
