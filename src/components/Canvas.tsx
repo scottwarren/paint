@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChromePicker } from 'react-color';
 import styled from 'styled-components';
 
 const PaintingCanvas = styled.canvas`
@@ -23,29 +24,39 @@ function getMousePos(canvas: HTMLCanvasElement, ev: React.MouseEvent) {
 
 function Canvas(): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [color, setColor] = useState('rgba(0, 0, 0, 1)');
+
   let isMouseDown = false;
 
-  let canvas: HTMLCanvasElement | null;
-  let context: CanvasRenderingContext2D;
+  let canvas = canvasRef?.current;
+  let context = canvas?.getContext('2d');
+
   useEffect(() => {
-    canvas = canvasRef.current;
+    canvas = canvasRef?.current;
+    context = canvas?.getContext('2d');
+  }, [canvasRef]);
+
+  useEffect(() => {
     if (!canvas) {
       console.log('...waiting for canvas...');
       return;
     }
 
-    // Setting the Canvas height/width so it scales appopriately and doesn't reset to default (300px)
+    // Setting the Canvas height/width so it scales appropriately and doesn't reset to default (300px)
     // Required because I'm using viewport units (rather than a fixed value e.g. px)
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
+  }, []);
 
-    context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  }, [canvasRef]);
-
-  // const handleMouseDown = (ev: React.MouseEvent) => {
   const handleMouseDown = () => {
     isMouseDown = true;
+    if (!context) {
+      console.error('no context yet...');
+      debugger;
+      return;
+    }
     context.beginPath();
+    context.strokeStyle = color;
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
@@ -54,7 +65,7 @@ function Canvas(): React.ReactElement {
     }
 
     if (!context) {
-      console.error('no context yet...?');
+      console.error('no context yet...');
       return;
     }
 
@@ -65,31 +76,51 @@ function Canvas(): React.ReactElement {
 
     const { x, y } = getMousePos(canvas, ev);
 
+    context.strokeStyle = color;
     context.lineTo(x, y);
     context.stroke();
     context.moveTo(x, y);
   };
 
   const handleMouseUp = () => {
-    // const handleMouseUp = (ev: React.MouseEvent) => {
     isMouseDown = false;
+
+    if (!context) {
+      console.error('no context yet...');
+      debugger;
+      return;
+    }
+
     context.closePath();
   };
 
   // Make sure that the pen tool doesn't get stuck on if the user exits the viewport
   const handleMouseLeave = () => {
+    if (!context) {
+      console.error('no context yet...');
+      debugger;
+      return;
+    }
     isMouseDown = false;
     context.closePath();
   };
 
   return (
-    <PaintingCanvas
-      ref={canvasRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-    />
+    <>
+      <ChromePicker
+        color={color}
+        onChange={({ rgb: { r, g, b, a } }) => {
+          setColor(`rgba(${r}, ${g}, ${b}, ${a})`);
+        }}
+      />
+      <PaintingCanvas
+        ref={canvasRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+      />
+    </>
   );
 }
 
