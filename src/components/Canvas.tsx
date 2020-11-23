@@ -10,8 +10,6 @@ const PaintingCanvas = styled.canvas`
   height: 800px;
 `;
 
-const LINE_SIZE = 2;
-
 function Canvas(): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [color, setColor] = useState('rgba(0, 0, 0, 1)');
