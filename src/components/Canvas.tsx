@@ -3,6 +3,7 @@ import { ChromePicker, RGBColor } from 'react-color';
 import styled from 'styled-components';
 
 import getMousePos from '../utils/get-mouse-pos';
+import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 
 const PaintingCanvas = styled.canvas`
   width: 100vw;
@@ -16,10 +17,6 @@ const DEFAULT_RGB = {
   b: 0,
   a: 1,
 };
-
-function getCSSColorFromRGBA({ r, g, b, a }: RGBColor) {
-  return `rgba(${r}, ${g}, ${b}, ${a})`;
-}
 
 function Canvas(): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -58,7 +55,7 @@ function Canvas(): React.ReactElement {
 
     context.beginPath();
 
-    context.strokeStyle = getCSSColorFromRGBA(color);
+    context.strokeStyle = getCSSColorFromRGBColor(color);
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
