@@ -27,6 +27,7 @@ function Canvas(): React.ReactElement {
   let canvas = canvasRef?.current;
   let context = canvas?.getContext('2d');
 
+  // Any time canvasRef changes, we need to set the canvas/context variables so we have access to the correct canvas
   useEffect(() => {
     canvas = canvasRef?.current;
     context = canvas?.getContext('2d');
