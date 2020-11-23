@@ -76,6 +76,7 @@ function Canvas(): React.ReactElement {
     const { x, y } = getMousePos(canvas, ev);
     context.lineTo(x, y);
     context.stroke();
+    context.beginPath();
     context.moveTo(x, y);
   };
 
