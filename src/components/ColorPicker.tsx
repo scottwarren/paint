@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { ChromePicker, RGBColor, ColorChangeHandler } from 'react-color';
+import {
+  ChromePicker,
+  ColorPickerProps as ReactColorPickerProps,
+} from 'react-color';
 import styled from 'styled-components';
-
-interface ColorPickerProps {
-  color: RGBColor;
-  onChange: ColorChangeHandler;
-}
 
 const Popover = styled.div`
   position: absolute;
@@ -25,7 +23,8 @@ const ColorPickerButton = styled.button``;
 function ColorPicker({
   color,
   onChange,
-}: ColorPickerProps): React.ReactElement {
+  onChangeComplete,
+}: ReactColorPickerProps<Record<string, unknown>>): React.ReactElement {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -37,7 +36,11 @@ function ColorPicker({
         <>
           <Background onClick={() => setIsOpen(false)} />
           <Popover>
-            <ChromePicker color={color} onChange={onChange} />
+            <ChromePicker
+              color={color}
+              onChange={onChange}
+              onChangeComplete={onChangeComplete}
+            />
           </Popover>
         </>
       )}
