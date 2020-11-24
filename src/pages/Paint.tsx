@@ -14,14 +14,21 @@ const DEFAULT_RGBA = {
 
 const Container = styled.div`
   display: flex;
-  border-top: solid 2px hsl(0, 0%, 97%);
-  border-bottom: solid 2px hsl(0, 0%, 97%);
+  border-top: solid 0.5em hsl(0, 0%, 97%);
+  border-bottom: solid 0.5em hsl(0, 0%, 97%);
 `;
 
 const ToolbarContainer = styled.div`
-  width: 100px;
-  border-right: solid 2px hsl(0, 0%, 97%);
+  width: 6.25em;
+  border-right: solid 0.5em hsl(0, 0%, 97%);
   padding: 0.5em;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+const ToolbarRow = styled.div`
+  margin: 0.25em 0;
 `;
 
 const CanvasContainer = styled.div`
@@ -35,12 +42,12 @@ function Paint(): React.ReactElement {
   return (
     <Container>
       <ToolbarContainer>
-        <div>
+        <ToolbarRow>
           <button>Pencil</button>
-        </div>
-        <div>
+        </ToolbarRow>
+        <ToolbarRow>
           <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
-        </div>
+        </ToolbarRow>
       </ToolbarContainer>
       <CanvasContainer>
         <Canvas color={color} />
