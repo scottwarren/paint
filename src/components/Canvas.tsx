@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import { RGBColor } from 'react-color';
 import styled from 'styled-components';
 
@@ -7,8 +7,9 @@ import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 
 const PaintingCanvas = styled.canvas`
   width: 100%;
-  // TODO: make it fit height of container
-  height: 800px;
+  height: 100%;
+
+  border: 1px solid green;
 `;
 
 interface CanvasProps {
@@ -38,7 +39,7 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
   }, [brushSize]);
 
   // Any time canvasRef changes, we need to set the canvas/context variables so we have access to the correct canvas
-  useEffect(() => {
+  useLayoutEffect(() => {
     canvas = canvasRef?.current;
     context = canvas?.getContext('2d');
   }, [canvasRef]);
@@ -51,11 +52,20 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
 
     // Setting the Canvas height/width so it scales appropriately and doesn't reset to default (300px)
     // Required because I'm using viewport units (rather than a fixed value e.g. px)
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }, []);
+    canvas.setAttribute(
+      'width',
+      window.getComputedStyle(canvas, null).getPropertyValue('width')
+    );
 
-  const handleMouseDown = (ev: React.MouseEvent) => {
+    canvas.setAttribute(
+      'height',
+      window.getComputedStyle(canvas, null).getPropertyValue('height')
+    );
+  }, [canvasRef]);
+
+  function handleMouseDown(ev: React.MouseEvent) {
+    ev.preventDefault();
+    console.log('handleMouseDown');
     isMouseDown = true;
 
     if (!context) {
@@ -78,9 +88,10 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
     context.lineTo(x, y);
     context.stroke();
     context.moveTo(x, y);
-  };
+  }
 
-  const handleMouseMove = (ev: React.MouseEvent) => {
+  function handleMouseMove(ev: React.MouseEvent) {
+    ev.preventDefault();
     if (!context) {
       console.error('no context yet...');
       return;
@@ -102,19 +113,18 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
     context.stroke();
     context.beginPath();
     context.moveTo(x, y);
-  };
+  }
 
-  const handleMouseUp = () => {
+  function handleMouseUp(ev: React.MouseEvent) {
+    ev.preventDefault();
     isMouseDown = false;
 
-    context?.closePath();
-  };
+    console.log(
+      context?.getImageData(0, 0, canvas?.width ?? 0, canvas?.height ?? 0)
+    );
 
-  // Make sure that the pen tool doesn't get stuck on if the user exits the canvas
-  const handleMouseLeave = () => {
-    isMouseDown = false;
     context?.closePath();
-  };
+  }
 
   return (
     <PaintingCanvas
@@ -122,7 +132,6 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
     />
   );
 }
