@@ -5,7 +5,7 @@ import {
   ColorPickerProps as ReactColorPickerProps,
 } from 'react-color';
 import styled from 'styled-components';
-import { Slider } from '@reach/slider';
+import Popover from 'react-popover';
 
 import ColorSwatchButton from './ColorSwatchButton';
 
@@ -16,18 +16,6 @@ interface ColorPickerProps
   extends ReactColorPickerProps<Record<string, unknown>> {
   color: RGBColor;
 }
-
-const Popover = styled.div`
-  position: relative;
-  // Required because the Slider component has its own built-in stacking context/specific z-index set
-  z-index: 2;
-`;
-
-const ColorPickerContainer = styled.div`
-  position: absolute;
-  left: 2em;
-  top: -3em;
-`;
 
 const Background = styled.div`
   position: fixed;
@@ -47,24 +35,22 @@ function ColorPicker({
 
   return (
     <>
-      <ColorSwatchButton
-        selectedColor={color}
-        onClick={() => setIsOpen(true)}
-      />
-      {isOpen && (
-        <>
-          <Background onClick={() => setIsOpen(false)} />
-          <Popover>
-            <ColorPickerContainer>
-              <ChromePicker
-                color={color}
-                onChange={onChange}
-                onChangeComplete={onChangeComplete}
-              />
-            </ColorPickerContainer>
-          </Popover>
-        </>
-      )}
+      {isOpen && <Background onClick={() => setIsOpen(false)} />}
+      <Popover
+        isOpen={isOpen}
+        body={
+          <ChromePicker
+            color={color}
+            onChange={onChange}
+            onChangeComplete={onChangeComplete}
+          />
+        }
+      >
+        <ColorSwatchButton
+          selectedColor={color}
+          onClick={() => setIsOpen(true)}
+        />
+      </Popover>
     </>
   );
 }
