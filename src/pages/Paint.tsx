@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import styled from 'styled-components';
+import Slider from '@material-ui/core/Slider';
 
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
@@ -58,7 +59,13 @@ function Paint(): React.ReactElement {
     <Container>
       <ContextMenuArea>
         <label>Brush Size: {brushSize}px</label>
-        {/* <Slider min={1} max={200} value={brushSize} onChange={setBrushSize} /> */}
+
+        <Slider
+          value={brushSize}
+          min={1}
+          max={200}
+          onChange={(_, newBrushSize) => setBrushSize(newBrushSize as number)}
+        />
       </ContextMenuArea>
       <ToolbarArea>
         <PencilToolButton />
