@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import getCSSColorFromColor from '../utils/get-css-color-from-rgb-color';
 
 interface Props {
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   selectedColor: RGBColor;
 }
 

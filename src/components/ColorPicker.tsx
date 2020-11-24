@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   RGBColor,
   ChromePicker,
   ColorPickerProps as ReactColorPickerProps,
 } from 'react-color';
-import styled from 'styled-components';
-import Popover from 'react-popover';
+
+import Popover from '@material-ui/core/Popover';
 
 import ColorSwatchButton from './ColorSwatchButton';
 
@@ -17,38 +17,45 @@ interface ColorPickerProps
   color: RGBColor;
 }
 
-const Background = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.33);
-`;
-
 function ColorPicker({
   color,
   onChange,
   onChangeComplete,
 }: ColorPickerProps): React.ReactElement {
-  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const isOpen = Boolean(anchorEl);
 
   return (
     <>
-      {isOpen && <Background onClick={() => setIsOpen(false)} />}
+      <ColorSwatchButton selectedColor={color} onClick={handlePopoverOpen} />
       <Popover
-        isOpen={isOpen}
-        body={
-          <ChromePicker
-            color={color}
-            onChange={onChange}
-            onChangeComplete={onChangeComplete}
-          />
-        }
+        open={isOpen}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'left',
+        }}
       >
-        <ColorSwatchButton
-          selectedColor={color}
-          onClick={() => setIsOpen(true)}
+        <ChromePicker
+          color={color}
+          onChange={onChange}
+          onChangeComplete={onChangeComplete}
         />
       </Popover>
     </>
