@@ -1,31 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ChromePicker, RGBColor } from 'react-color';
+import React, { useEffect, useRef } from 'react';
+import { RGBColor } from 'react-color';
 import styled from 'styled-components';
 
 import getMousePos from '../utils/get-mouse-pos';
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 
 const PaintingCanvas = styled.canvas`
-  width: 100vw;
+  width: 100%;
   // TODO: make it fit height of container
   height: 800px;
 `;
 
-const DEFAULT_RGB = {
-  r: 0,
-  g: 0,
-  b: 0,
-  a: 1,
-};
+interface CanvasProps {
+  color: RGBColor;
+}
 
-function Canvas(): React.ReactElement {
+function Canvas({ color }: CanvasProps): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [color, setColor] = useState<RGBColor>(DEFAULT_RGB);
 
   let isMouseDown = false;
 
   let canvas = canvasRef?.current;
   let context = canvas?.getContext('2d');
+
+  // Any time the color changes, update the stroke of the line we're drawing
+  useEffect(() => {
+    if (context) {
+      context.strokeStyle = getCSSColorFromRGBColor(color);
+    }
+  }, [color]);
 
   // Any time canvasRef changes, we need to set the canvas/context variables so we have access to the correct canvas
   useEffect(() => {
@@ -45,7 +48,7 @@ function Canvas(): React.ReactElement {
     canvas.height = canvas.offsetHeight;
   }, []);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (ev: React.MouseEvent) => {
     isMouseDown = true;
 
     if (!context) {
@@ -54,12 +57,20 @@ function Canvas(): React.ReactElement {
       return;
     }
 
+    if (!canvas) {
+      console.error('no canvas yet...');
+      return;
+    }
+
     context.beginPath();
+    const { x, y } = getMousePos(canvas, ev);
+    context.moveTo(x, y);
 
     context.strokeStyle = getCSSColorFromRGBColor(color);
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
+    // The mouse being pressed indicates the user is drawing
     if (!isMouseDown) {
       return;
     }
@@ -75,6 +86,7 @@ function Canvas(): React.ReactElement {
     }
 
     const { x, y } = getMousePos(canvas, ev);
+
     context.lineTo(x, y);
     context.stroke();
     context.beginPath();
@@ -94,16 +106,13 @@ function Canvas(): React.ReactElement {
   };
 
   return (
-    <>
-      <ChromePicker color={color} onChange={({ rgb }) => setColor(rgb)} />
-      <PaintingCanvas
-        ref={canvasRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-      />
-    </>
+    <PaintingCanvas
+      ref={canvasRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+    />
   );
 }
 
