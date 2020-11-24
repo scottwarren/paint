@@ -5,6 +5,7 @@ import {
   ColorPickerProps as ReactColorPickerProps,
 } from 'react-color';
 import styled from 'styled-components';
+import { Slider } from '@reach/slider';
 
 import ColorSwatchButton from './ColorSwatchButton';
 
@@ -17,7 +18,15 @@ interface ColorPickerProps
 }
 
 const Popover = styled.div`
+  position: relative;
+  // Required because the Slider component has its own built-in stacking context/specific z-index set
+  z-index: 2;
+`;
+
+const ColorPickerContainer = styled.div`
   position: absolute;
+  left: 2em;
+  top: -3em;
 `;
 
 const Background = styled.div`
@@ -26,7 +35,7 @@ const Background = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.33);
 `;
 
 function ColorPicker({
@@ -46,11 +55,13 @@ function ColorPicker({
         <>
           <Background onClick={() => setIsOpen(false)} />
           <Popover>
-            <ChromePicker
-              color={color}
-              onChange={onChange}
-              onChangeComplete={onChangeComplete}
-            />
+            <ColorPickerContainer>
+              <ChromePicker
+                color={color}
+                onChange={onChange}
+                onChangeComplete={onChangeComplete}
+              />
+            </ColorPickerContainer>
           </Popover>
         </>
       )}
