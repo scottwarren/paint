@@ -14,21 +14,22 @@ const DEFAULT_RGBA = {
 
 const Container = styled.div`
   display: flex;
-  border-top: solid 0.5em hsl(0, 0%, 97%);
-  border-bottom: solid 0.5em hsl(0, 0%, 97%);
+  border-top: solid 0.1em hsl(0, 0%, 97%);
+  border-bottom: solid 0.1em hsl(0, 0%, 97%);
 `;
 
 const ToolbarContainer = styled.div`
   width: 6.25em;
-  border-right: solid 0.5em hsl(0, 0%, 97%);
+  border-right: solid 0.1em hsl(0, 0%, 97%);
   padding: 0.5em;
 
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const ToolbarRow = styled.div`
-  margin: 0.25em 0;
+  margin: 0.5em 0;
 `;
 
 const CanvasContainer = styled.div`
