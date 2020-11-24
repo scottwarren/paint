@@ -35,8 +35,12 @@ function Paint(): React.ReactElement {
   return (
     <Container>
       <ToolbarContainer>
-        <button>Pencil</button>
-        <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+        <div>
+          <button>Pencil</button>
+        </div>
+        <div>
+          <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+        </div>
       </ToolbarContainer>
       <CanvasContainer>
         <Canvas color={color} />
