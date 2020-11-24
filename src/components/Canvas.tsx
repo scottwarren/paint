@@ -13,9 +13,10 @@ const PaintingCanvas = styled.canvas`
 
 interface CanvasProps {
   color: RGBColor;
+  brushSize: number;
 }
 
-function Canvas({ color }: CanvasProps): React.ReactElement {
+function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   let isMouseDown = false;
@@ -29,6 +30,12 @@ function Canvas({ color }: CanvasProps): React.ReactElement {
       context.strokeStyle = getCSSColorFromRGBColor(color);
     }
   }, [color]);
+
+  useEffect(() => {
+    if (context) {
+      context.lineWidth = brushSize;
+    }
+  }, [brushSize]);
 
   // Any time canvasRef changes, we need to set the canvas/context variables so we have access to the correct canvas
   useEffect(() => {
@@ -64,17 +71,16 @@ function Canvas({ color }: CanvasProps): React.ReactElement {
 
     context.beginPath();
     const { x, y } = getMousePos(canvas, ev);
-    context.moveTo(x, y);
 
     context.strokeStyle = getCSSColorFromRGBColor(color);
+    context.lineWidth = brushSize;
+    context.lineCap = 'round';
+    context.lineTo(x, y);
+    context.stroke();
+    context.moveTo(x, y);
   };
 
   const handleMouseMove = (ev: React.MouseEvent) => {
-    // The mouse being pressed indicates the user is drawing
-    if (!isMouseDown) {
-      return;
-    }
-
     if (!context) {
       console.error('no context yet...');
       return;
@@ -82,6 +88,11 @@ function Canvas({ color }: CanvasProps): React.ReactElement {
 
     if (!canvas) {
       console.error('no canvas yet...');
+      return;
+    }
+
+    // The mouse being pressed indicates the user is drawing
+    if (!isMouseDown) {
       return;
     }
 

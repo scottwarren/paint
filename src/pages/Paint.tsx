@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
+import PencilToolButton from '../components/buttons/PencilToolButton';
 
 const DEFAULT_RGBA = {
   r: 0,
@@ -26,10 +27,7 @@ const ToolbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ToolbarRow = styled.div`
-  margin: 0.5em 0;
+  gap: 1em;
 `;
 
 const CanvasContainer = styled.div`
@@ -39,19 +37,19 @@ const CanvasContainer = styled.div`
 
 function Paint(): React.ReactElement {
   const [color, setColor] = useState<RGBColor>(DEFAULT_RGBA);
+  const [brushSize, setBrushSize] = useState<number>(2);
 
   return (
     <Container>
       <ToolbarContainer>
-        <ToolbarRow>
-          <button>Pencil</button>
-        </ToolbarRow>
-        <ToolbarRow>
-          <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
-        </ToolbarRow>
+        <PencilToolButton />
+        <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+        <button onClick={() => setBrushSize(brushSize + 2)}>
+          Increase by 2
+        </button>
       </ToolbarContainer>
       <CanvasContainer>
-        <Canvas color={color} />
+        <Canvas color={color} brushSize={brushSize} />
       </CanvasContainer>
     </Container>
   );
