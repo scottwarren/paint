@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
-import { Slider } from '@reach/slider';
 import styled from 'styled-components';
-
-import '@reach/slider/styles.css';
 
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
@@ -24,7 +21,9 @@ const Container = styled.div`
   grid-template-areas:
     'toolbar context-menu'
     'toolbar canvas';
-  grid-template-columns: 6.25em auto;
+  grid-template-columns: 3em auto;
+  grid-template-rows: min-content 100%;
+  height: 100vh;
 `;
 
 const ContextMenuArea = styled.div`
@@ -32,12 +31,12 @@ const ContextMenuArea = styled.div`
   border: 1px solid red;
   padding: 0.5em;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 1em;
 `;
 
 const ToolbarArea = styled.div`
   grid-area: toolbar;
-  // width: 6.25em;
   border-right: solid 0.1em hsl(0, 0%, 97%);
   padding: 0.5em;
 
@@ -59,7 +58,7 @@ function Paint(): React.ReactElement {
     <Container>
       <ContextMenuArea>
         <label>Brush Size: {brushSize}px</label>
-        <Slider min={1} max={200} value={brushSize} onChange={setBrushSize} />
+        {/* <Slider min={1} max={200} value={brushSize} onChange={setBrushSize} /> */}
       </ContextMenuArea>
       <ToolbarArea>
         <PencilToolButton />
