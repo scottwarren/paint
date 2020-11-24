@@ -18,17 +18,16 @@ const ColorPickerButton = styled.button`
   padding: 0.25em;
   background: #fff;
   border-radius: 0.125em;
-  box-shadow: '0 0 0 1px rgba(0, 0, 0, .1)';
+  box-shadow: 0 0 0 0.0625em rgba(0, 0, 0, 0.1);
   border: 0;
   cursor: pointer;
 `;
 
 const SingleSwatch = styled.span<ColorPickerButtonProps>`
   background: ${({ selectedColor }) => getCSSColorFromColor(selectedColor)};
-  width: 2em;
-  height: 2em;
+  width: 2.5em;
+  height: 1.25em;
   border-radius: 0.125em;
-  border: 1px solid pink;
   display: block;
 `;
 
