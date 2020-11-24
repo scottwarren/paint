@@ -87,7 +87,7 @@ function Canvas(): React.ReactElement {
     context?.closePath();
   };
 
-  // Make sure that the pen tool doesn't get stuck on if the user exits the viewport
+  // Make sure that the pen tool doesn't get stuck on if the user exits the canvas
   const handleMouseLeave = () => {
     isMouseDown = false;
     context?.closePath();
