@@ -34,10 +34,12 @@ function ColorPicker({
         Color
       </ColorPickerButton>
       {isOpen && (
-        <Popover>
+        <>
           <Background onClick={() => setIsOpen(false)} />
-          <ChromePicker color={color} onChange={onChange} />
-        </Popover>
+          <Popover>
+            <ChromePicker color={color} onChange={onChange} />
+          </Popover>
+        </>
       )}
     </>
   );
