@@ -8,7 +8,9 @@ import styled from 'styled-components';
 
 import ColorSwatchButton from './ColorSwatchButton';
 
-// We convert RGBColor to an rgba string. ReactColorPickerProps allows the color to be HSL/RGB/string/undefined
+// ReactColorPickerProps allows the color to be HSL/RGB/string/undefined
+// but we convert the color from RGBColor to an rgba string. which means
+// we want to be very specific about the input so we can convert it successfully
 interface ColorPickerProps
   extends ReactColorPickerProps<Record<string, unknown>> {
   color: RGBColor;
