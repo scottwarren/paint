@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import {
+  RGBColor,
   ChromePicker,
   ColorPickerProps as ReactColorPickerProps,
 } from 'react-color';
 import styled from 'styled-components';
+
+import ColorSwatchButton from './ColorSwatchButton';
+
+// We convert RGBColor to an rgba string. ReactColorPickerProps allows the color to be HSL/RGB/string/undefined
+interface ColorPickerProps
+  extends ReactColorPickerProps<Record<string, unknown>> {
+  color: RGBColor;
+}
 
 const Popover = styled.div`
   position: absolute;
@@ -18,20 +27,19 @@ const Background = styled.div`
   background: rgba(0, 0, 0, 0.25);
 `;
 
-const ColorPickerButton = styled.button``;
-
 function ColorPicker({
   color,
   onChange,
   onChangeComplete,
-}: ReactColorPickerProps<Record<string, unknown>>): React.ReactElement {
+}: ColorPickerProps): React.ReactElement {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <ColorPickerButton onClick={() => setIsOpen(true)}>
-        Color
-      </ColorPickerButton>
+      <ColorSwatchButton
+        selectedColor={color}
+        onClick={() => setIsOpen(true)}
+      />
       {isOpen && (
         <>
           <Background onClick={() => setIsOpen(false)} />
