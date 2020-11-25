@@ -42,7 +42,7 @@ function ColorPicker({
 
   return (
     <>
-      <ColorSwatchButton selectedColor={color} onClick={handlePopoverOpen} />
+      <ColorSwatchButton onClick={handlePopoverOpen} />
       <Popover
         open={isOpen}
         anchorEl={anchorEl}
