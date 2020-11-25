@@ -4,9 +4,19 @@ Basic paint application built as a coding challenge and to learn about drawing w
 
 Bootstrapped with Create React App (with TypeScript)
 
+## Features
+
+- [x] Ability to save drawing to a JSON file
+- [x] Ability to load a previously saved drawing
+- [x] Change Brush width
+- [x] Change Brush colour
+- [x] Change Brush opacity
+- [x] Very drawing statistics
+
 ## Requirements
 
 - Built and tested with Node `v14.15.1` (run `nvm use` in the project directory if you have NVM installed)
+- Testing in Chrome v86 on Mac OS X
 
 ## Setup
 
