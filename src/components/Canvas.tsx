@@ -30,39 +30,32 @@ function Canvas({
   useEffect(() => {
     if (!canvasRef?.current) return;
 
-    setCanvas(
-      new fabric.Canvas(canvasRef.current, {
-        isDrawingMode: true,
-        freeDrawingCursor: 'round',
-        fill: getCSSColorFromRGBColor(color),
-        width: 1022,
-        height: 500,
-      })
-    );
-  }, []);
-
-  // const ref = useFabric(color);
-
-  // TODO: Load initial drawing from state
-
-  useEffect(() => {
-    if (!canvas) return;
-
-    function saveDrawing() {
-      console.log('saving the canvas');
-      if (!canvas) {
-        debugger;
-        return;
-      }
-
-      onChange(canvas.toObject());
-    }
+    const newCanvas = new fabric.Canvas(canvasRef.current, {
+      isDrawingMode: true,
+      freeDrawingCursor: 'round',
+      fill: getCSSColorFromRGBColor(color),
+      width: 1022,
+      height: 500,
+    });
 
     // Bind events to save the drawing whenever something is added on the canvas
-    canvas.on('object:added', saveDrawing);
-    canvas.on('object:modified', saveDrawing);
-    canvas.on('object:removed', saveDrawing);
-  }, [color]);
+    // newCanvas.on('object:added', saveDrawing);
+    // newCanvas.on('object:modified', saveDrawing);
+    // newCanvas.on('object:removed', saveDrawing);
+    newCanvas.on('mouse:up', () => {
+      {
+        console.log('saving the canvas');
+        if (!newCanvas) {
+          debugger;
+          return;
+        }
+
+        onChange(newCanvas.toObject());
+      }
+    });
+
+    setCanvas(newCanvas);
+  }, []);
 
   // Adjust the color of the stroke/brush when that is changed
   useEffect(() => {
@@ -80,15 +73,6 @@ function Canvas({
     canvas.freeDrawingBrush.width = brushSize;
     setCanvas(canvas);
   }, [brushSize]);
-
-  // useEffect(() => {
-  //   if (!canvas) return;
-
-  //   console.log('canvas information');
-
-  //   console.log(canvas.freeDrawingBrush.width);
-  //   console.log(canvas.freeDrawingBrush.color);
-  // });
 
   return <canvas ref={canvasRef} id='paint-canvas' />;
 }
