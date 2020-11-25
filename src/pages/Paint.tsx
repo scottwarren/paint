@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import styled from 'styled-components';
-import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
-import PencilToolButton from '../components/buttons/PencilToolButton';
+import BrushSizePicker from '../components/BrushSizePicker';
+import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
+
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const DEFAULT_RGBA = {
   r: 0,
@@ -33,6 +36,7 @@ const ContextMenuArea = styled.div`
   padding: 0.5em;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1em;
 `;
 
@@ -63,18 +67,13 @@ function Paint(): React.ReactElement {
   return (
     <Container>
       <ContextMenuArea>
-        <label>Brush Size: {brushSize}px</label>
-
-        <Slider
-          value={brushSize}
-          min={1}
-          max={200}
-          onChange={(_, newBrushSize) => setBrushSize(newBrushSize as number)}
-        />
+        <Typography>Brush Size {brushSize}px</Typography>
+        <Typography>Selected Colour:</Typography>
+        <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
       </ContextMenuArea>
       <ToolbarArea>
         <ToolbarContainer>
-          <PencilToolButton />
+          <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
           <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
         </ToolbarContainer>
       </ToolbarArea>
