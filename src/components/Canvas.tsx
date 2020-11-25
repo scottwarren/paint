@@ -20,6 +20,8 @@ interface CanvasProps {
   initialDrawing: Drawing;
 }
 
+const noop = () => null;
+
 function Canvas({
   color,
   brushSize,
@@ -42,14 +44,11 @@ function Canvas({
 
     // This allows the option to "seed" the canvas with an existing drawing
     if (initialDrawing) {
-      newCanvas.loadFromJSON(initialDrawing, () => {
-        console.log('loaded canvas');
-      });
+      newCanvas.loadFromJSON(initialDrawing, noop);
     }
 
     // Bind events to save the drawing whenever something is added on the canvas
     newCanvas.on('mouse:up', () => {
-      console.log('saving the canvas');
       if (!newCanvas) {
         return;
       }
