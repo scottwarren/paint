@@ -8,6 +8,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
 import BrushSizePicker from '../components/BrushSizePicker';
+import SaveDrawingButton from '../components/buttons/SaveDrawingButton';
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 
 const DEFAULT_RGBA = {
@@ -66,6 +67,7 @@ const CanvasArea = styled.div`
 function Paint(): React.ReactElement {
   const [color, setColor] = useState<RGBColor>(DEFAULT_RGBA);
   const [brushSize, setBrushSize] = useState<number>(2);
+  const [drawing, setDrawing] = useState(null);
 
   const getOpacity = useCallback(() => {
     const alpha = color?.a ?? 1;
@@ -87,10 +89,20 @@ function Paint(): React.ReactElement {
         <ToolbarContainer>
           <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
           <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+          <SaveDrawingButton onClick={() => null} />
         </ToolbarContainer>
       </ToolbarArea>
       <CanvasArea>
-        <Canvas color={color} brushSize={brushSize} />
+        <Canvas
+          color={color}
+          brushSize={brushSize}
+          drawing={drawing}
+          // Fix this once I know what's passed
+          onChange={(drawing: any) => {
+            console.log(drawing);
+            setDrawing(drawing);
+          }}
+        />
       </CanvasArea>
     </Container>
   );

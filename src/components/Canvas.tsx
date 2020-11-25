@@ -7,9 +7,18 @@ import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 interface CanvasProps {
   color: RGBColor;
   brushSize: number;
+  // TODO: Figure out what type this would be
+  // JSON string?
+  drawing: string | null;
+  onChange: any;
 }
 
-function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
+function Canvas({
+  color,
+  brushSize,
+  drawing,
+  onChange,
+}: CanvasProps): React.ReactElement {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
 
   useEffect(() => {
