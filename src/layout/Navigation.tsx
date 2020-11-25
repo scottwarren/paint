@@ -18,20 +18,12 @@ function Navigation(): React.ReactElement {
   return (
     <Container>
       <Link component={RouterLink} to='/'>
-        <Button
-          variant='contained'
-          color='default'
-          startIcon={<BorderColorIcon />}
-        >
+        <Button variant='text' color='primary' startIcon={<BorderColorIcon />}>
           Paint
         </Button>
       </Link>
       <Link component={RouterLink} to='/statistics'>
-        <Button
-          variant='contained'
-          color='default'
-          startIcon={<BarChartIcon />}
-        >
+        <Button variant='text' color='primary' startIcon={<BarChartIcon />}>
           Statistics
         </Button>
       </Link>

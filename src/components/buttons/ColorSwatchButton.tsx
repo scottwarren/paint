@@ -14,7 +14,7 @@ function ColorSwatchButton({
     <Tooltip title='Change Colour' arrow placement='top'>
       <Button
         variant='contained'
-        color='primary'
+        color='default'
         onClick={onClick}
         component='span'
       >
