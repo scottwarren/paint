@@ -19,7 +19,6 @@ const DEFAULT_RGBA = {
 
 const Container = styled.div`
   border-top: solid 0.1em hsl(0, 0%, 97%);
-  border-bottom: solid 0.1em hsl(0, 0%, 97%);
 
   display: grid;
   grid-template-areas:
@@ -37,6 +36,7 @@ const ContextMenuArea = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1em;
+  border-bottom: solid 0.1em hsl(0, 0%, 97%);
 `;
 
 const ToolbarArea = styled.div`
