@@ -40,6 +40,7 @@ function Canvas({
       height: 500,
     });
 
+    // This allows the option to "seed" the canvas with an existing drawing
     if (initialDrawing) {
       newCanvas.loadFromJSON(initialDrawing, () => {
         console.log('loaded canvas');
@@ -47,13 +48,9 @@ function Canvas({
     }
 
     // Bind events to save the drawing whenever something is added on the canvas
-    // newCanvas.on('object:added', saveDrawing);
-    // newCanvas.on('object:modified', saveDrawing);
-    // newCanvas.on('object:removed', saveDrawing);
     newCanvas.on('mouse:up', () => {
       console.log('saving the canvas');
       if (!newCanvas) {
-        debugger;
         return;
       }
 
