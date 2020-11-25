@@ -1,27 +1,27 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import Tooltip from '@material-ui/core/Tooltip';
 
-interface SaveDrawingButtonProps {
+interface LoadDrawingButtonProps {
   onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function SaveDrawingButton({
+function LoadDrawingButton({
   onClick,
-}: SaveDrawingButtonProps): React.ReactElement {
+}: LoadDrawingButtonProps): React.ReactElement {
   return (
-    <Tooltip title='Save Drawing as a JSON file' arrow placement='top'>
+    <Tooltip title='Load Drawing' arrow placement='top'>
       <Button
         variant='contained'
         color='default'
         onClick={onClick}
         component='span'
       >
-        <SaveAltIcon />
+        <FolderOpenIcon />
       </Button>
     </Tooltip>
   );
 }
 
-export default SaveDrawingButton;
+export default LoadDrawingButton;

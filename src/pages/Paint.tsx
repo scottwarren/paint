@@ -8,6 +8,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import LayoutContainer from '../layout/Layout';
 import Canvas, { Drawing } from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
+import LoadDrawing from '../components/LoadDrawing';
 import BrushSizePicker from '../components/BrushSizePicker';
 import SaveDrawingButton from '../components/buttons/SaveDrawingButton';
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
@@ -108,6 +109,7 @@ function Paint({ drawing, setDrawing }: PaintProps): React.ReactElement {
             <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
             <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
             <SaveDrawingButton onClick={() => downloadDrawing(drawing)} />
+            <LoadDrawing onLoad={setDrawing} />
           </ToolbarContainer>
         </ToolbarArea>
         <CanvasArea>
