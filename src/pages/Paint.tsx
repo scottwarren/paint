@@ -22,7 +22,7 @@ const Container = styled.div`
   grid-template-areas:
     'toolbar context-menu'
     'toolbar canvas';
-  grid-template-columns: 3em auto;
+  grid-template-columns: min-content auto;
   grid-template-rows: min-content 100%;
   height: 100vh;
 `;
@@ -40,11 +40,16 @@ const ToolbarArea = styled.div`
   grid-area: toolbar;
   border-right: solid 0.1em hsl(0, 0%, 97%);
   padding: 0.5em;
+`;
 
+const ToolbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
+
+  border-radius: 0.5em;
+  padding: 0.5em;
 `;
 
 const CanvasArea = styled.div`
@@ -68,8 +73,10 @@ function Paint(): React.ReactElement {
         />
       </ContextMenuArea>
       <ToolbarArea>
-        <PencilToolButton />
-        <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+        <ToolbarContainer>
+          <PencilToolButton />
+          <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+        </ToolbarContainer>
       </ToolbarArea>
       <CanvasArea>
         <Canvas color={color} brushSize={brushSize} />
