@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { RGBColor } from 'react-color';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
@@ -64,12 +64,19 @@ function Paint(): React.ReactElement {
   const [color, setColor] = useState<RGBColor>(DEFAULT_RGBA);
   const [brushSize, setBrushSize] = useState<number>(2);
 
+  const getOpacity = useCallback(() => {
+    const alpha = color?.a ?? 1;
+
+    return `${Math.round(alpha * 100)}%`;
+  }, [color.a]);
+
   return (
     <Container>
       <ContextMenuArea>
         <Typography>Brush Size {brushSize}px</Typography>
         <Typography>Selected Colour:</Typography>
         <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
+        <Typography>Selected Opacity: {getOpacity()}</Typography>
       </ContextMenuArea>
       <ToolbarArea>
         <ToolbarContainer>
