@@ -11,7 +11,7 @@ function ColorSwatchButton({
   onClick,
 }: ColorSwatchButtonProps): React.ReactElement {
   return (
-    <Tooltip title='Change Colour' arrow placement='right'>
+    <Tooltip title='Change Colour' arrow placement='top'>
       <Button
         variant='contained'
         color='primary'

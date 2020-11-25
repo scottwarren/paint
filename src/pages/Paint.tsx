@@ -2,13 +2,13 @@ import React, { useState, useCallback } from 'react';
 import { RGBColor } from 'react-color';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 import Canvas from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
 import BrushSizePicker from '../components/BrushSizePicker';
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
-
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const DEFAULT_RGBA = {
   r: 0,
@@ -32,7 +32,6 @@ const Container = styled.div`
 
 const ContextMenuArea = styled.div`
   grid-area: context-menu;
-  border: 1px solid red;
   padding: 0.5em;
   display: flex;
   align-items: center;
@@ -73,9 +72,11 @@ function Paint(): React.ReactElement {
   return (
     <Container>
       <ContextMenuArea>
-        <Typography>Brush Size {brushSize}px</Typography>
+        <Typography>Selected Brush Size: {brushSize}px</Typography>
         <Typography>Selected Colour:</Typography>
-        <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
+        <Tooltip title={getCSSColorFromRGBColor(color)} placement='top'>
+          <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
+        </Tooltip>
         <Typography>Selected Opacity: {getOpacity()}</Typography>
       </ContextMenuArea>
       <ToolbarArea>

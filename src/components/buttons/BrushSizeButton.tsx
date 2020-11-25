@@ -11,7 +11,7 @@ function BrushSizeButton({
   onClick,
 }: BrushSizeButtonProps): React.ReactElement {
   return (
-    <Tooltip title='Brush Size' arrow placement='right'>
+    <Tooltip title='Brush Size' arrow placement='top'>
       <Button variant='contained' color='primary' onClick={onClick}>
         <CreateSharpIcon />
       </Button>

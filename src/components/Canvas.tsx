@@ -8,8 +8,6 @@ import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 const PaintingCanvas = styled.canvas`
   width: 100%;
   height: 100%;
-
-  border: 1px solid green;
 `;
 
 interface CanvasProps {
