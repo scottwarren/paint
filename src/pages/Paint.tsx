@@ -25,8 +25,12 @@ const Container = styled.div`
     'toolbar context-menu'
     'toolbar canvas';
   grid-template-columns: min-content auto;
-  grid-template-rows: min-content 100%;
-  height: 100vh;
+  grid-template-rows: min-content 500px;
+  // TODO: Change this to stretch to entire window once the dynamic Canvas width/height issue is solved
+  width: 70em;
+  margin: 0 auto;
+  box-shadow: 0 0.25em 0.5em 0 hsla(0, 0%, 0%, 0.08);
+  border-radius: 0.5em;
 `;
 
 const ContextMenuArea = styled.div`

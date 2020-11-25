@@ -1,19 +1,8 @@
-import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RGBColor } from 'react-color';
-import styled from 'styled-components';
 import { fabric } from 'fabric';
 
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
-
-const PaintingCanvas = styled.canvas`
-  width: 100%;
-  height: 100%;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-`;
 
 interface CanvasProps {
   color: RGBColor;
@@ -24,19 +13,12 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
 
   useEffect(() => {
-    setCanvas(
-      new fabric.Canvas('paint-canvas', {
-        isDrawingMode: true,
-        freeDrawingCursor: 'round',
-        fill: getCSSColorFromRGBColor(color),
-      })
-    );
-
-    return () => {
-      if (!canvas) return;
-
-      canvas.dispose();
-    };
+    const newCanvas = new fabric.Canvas('paint-canvas', {
+      isDrawingMode: true,
+      freeDrawingCursor: 'round',
+      fill: getCSSColorFromRGBColor(color),
+    });
+    setCanvas(newCanvas);
   }, []);
 
   useEffect(() => {
@@ -55,11 +37,8 @@ function Canvas({ color, brushSize }: CanvasProps): React.ReactElement {
     setCanvas(canvas);
   }, [brushSize]);
 
-  return (
-    <Container>
-      <PaintingCanvas id='paint-canvas' />
-    </Container>
-  );
+  // TODO: Solve dynamic/stretch width and height of the canvas
+  return <canvas id='paint-canvas' width={1022} height={500} />;
 }
 
 export default Canvas;
