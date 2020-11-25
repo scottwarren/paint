@@ -22,6 +22,8 @@ function ColorPicker({
   onChange,
   onChangeComplete,
 }: ColorPickerProps): React.ReactElement {
+  // Having a reference to the anchorElement itself is how Material UI manages the position of the Popover
+  // since we set slight adjustments to the position relative to the trigger/button itself
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (
@@ -34,6 +36,8 @@ function ColorPicker({
     setAnchorEl(null);
   };
 
+  // We could use a separate piece of state for this Boolean, but since the default value is a fals-y value
+  // we can "cheat" a little bit by casting the value to a Boolean
   const isOpen = Boolean(anchorEl);
 
   return (
