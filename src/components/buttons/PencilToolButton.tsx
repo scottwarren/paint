@@ -1,11 +1,15 @@
 import React from 'react';
-import { FaPencilAlt } from 'react-icons/fa';
+import Button from '@material-ui/core/Button';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function PencilToolButton(): React.ReactElement {
   return (
-    <button>
-      <FaPencilAlt />
-    </button>
+    <Tooltip title='Pencil Tool' arrow placement='right'>
+      <Button variant='contained' color='primary'>
+        <BorderColorIcon />
+      </Button>
+    </Tooltip>
   );
 }
 
