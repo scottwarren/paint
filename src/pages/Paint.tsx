@@ -64,10 +64,26 @@ const CanvasArea = styled.div`
   grid-area: canvas;
 `;
 
+// Adds ability to create a file with the contents of the drawing represented as JSON
+// Source: https://stackoverflow.com/a/53449590/1626678
+function downloadDrawing(drawing: string | undefined) {
+  if (!drawing) return;
+
+  const fileData = JSON.stringify(drawing);
+
+  const blob = new Blob([fileData], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.download = `drawing-${new Date().toISOString()}.json`;
+  link.href = url;
+  link.click();
+}
+
 function Paint(): React.ReactElement {
   const [color, setColor] = useState<RGBColor>(DEFAULT_RGBA);
   const [brushSize, setBrushSize] = useState<number>(2);
-  const [drawing, setDrawing] = useState(null);
+  const [drawing, setDrawing] = useState<string | undefined>(undefined);
 
   const getOpacity = useCallback(() => {
     const alpha = color?.a ?? 1;
@@ -89,20 +105,11 @@ function Paint(): React.ReactElement {
         <ToolbarContainer>
           <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
           <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
-          <SaveDrawingButton onClick={() => null} />
+          <SaveDrawingButton onClick={() => downloadDrawing(drawing)} />
         </ToolbarContainer>
       </ToolbarArea>
       <CanvasArea>
-        <Canvas
-          color={color}
-          brushSize={brushSize}
-          drawing={drawing}
-          // Fix this once I know what's passed
-          onChange={(drawing: any) => {
-            console.log(drawing);
-            setDrawing(drawing);
-          }}
-        />
+        <Canvas color={color} brushSize={brushSize} onChange={setDrawing} />
       </CanvasArea>
     </Container>
   );

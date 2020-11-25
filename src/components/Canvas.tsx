@@ -7,46 +7,55 @@ import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 interface CanvasProps {
   color: RGBColor;
   brushSize: number;
-  // TODO: Figure out what type this would be
+  // TODO: Figure out what type the arguments would be
   // JSON string?
-  drawing: string | null;
-  onChange: any;
+  onChange: (drawing?: string) => void;
 }
 
 function Canvas({
   color,
   brushSize,
-  drawing,
   onChange,
 }: CanvasProps): React.ReactElement {
-  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  let canvas: fabric.Canvas | null = null;
+
+  // TODO: Load initial drawing from state
 
   useEffect(() => {
-    const newCanvas = new fabric.Canvas('paint-canvas', {
+    canvas = new fabric.Canvas('paint-canvas', {
       isDrawingMode: true,
       freeDrawingCursor: 'round',
       fill: getCSSColorFromRGBColor(color),
       width: 1022,
       height: 500,
     });
-
-    setCanvas(newCanvas);
   }, []);
 
   useEffect(() => {
     if (!canvas) return;
 
-    canvas.freeDrawingBrush.color = getCSSColorFromRGBColor(color);
+    function saveDrawing() {
+      onChange(canvas?.toJSON());
+    }
 
-    setCanvas(canvas);
+    // Bind events to save the drawing whenever something is added on the canvas
+    canvas.on('object:added', saveDrawing);
+    canvas.on('object:modified', saveDrawing);
+    canvas.on('object:removed', saveDrawing);
+  });
+
+  // Adjust the color of the stroke/brush when that is changed
+  useEffect(() => {
+    if (!canvas) return;
+
+    canvas.freeDrawingBrush.color = getCSSColorFromRGBColor(color);
   }, [color]);
 
+  // Adjust stroke/brush size/width whenever that is changed
   useEffect(() => {
     if (!canvas) return;
 
     canvas.freeDrawingBrush.width = brushSize;
-
-    setCanvas(canvas);
   }, [brushSize]);
 
   return <canvas id='paint-canvas' />;
