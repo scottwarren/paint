@@ -59,6 +59,14 @@ function Canvas({
     setCanvas(newCanvas);
   }, []);
 
+  useEffect(() => {
+    if (!canvas) return;
+
+    canvas.loadFromJSON(initialDrawing, () => {
+      setCanvas(canvas);
+    });
+  }, [initialDrawing]);
+
   // Adjust the color of the stroke/brush when that is changed
   useEffect(() => {
     if (!canvas) return;

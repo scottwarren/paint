@@ -16,6 +16,37 @@ const Container = styled.div`
   padding: 0.5em 1em;
 `;
 
+function FileLoader({
+  onFileLoad,
+}: {
+  onFileLoad: (fileContents: Drawing) => void;
+}) {
+  // Likely some security implications here...
+  async function showFile(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      if (!e.target) return;
+
+      const text = e.target?.result;
+
+      if (!text) return;
+
+      console.log(text);
+
+      if (typeof text === 'string') {
+        onFileLoad(JSON.parse(text));
+      }
+    };
+
+    if (!e.target?.files?.length) return;
+
+    reader.readAsText(e?.target.files[0]);
+  }
+  return <input type='file' onChange={showFile} />;
+}
+
 function LoadDrawing({ onLoad }: LoadDrawingProps): React.ReactElement {
   // Having a reference to the anchorElement itself is how Material UI manages the position of the Popover
   // since we set slight adjustments to the position relative to the trigger/button itself
@@ -53,7 +84,7 @@ function LoadDrawing({ onLoad }: LoadDrawingProps): React.ReactElement {
       >
         <Container>
           <Typography gutterBottom>Load previously saved drawing</Typography>
-          <div>load me pls</div>
+          <FileLoader onFileLoad={onLoad} />
         </Container>
       </Popover>
     </>
