@@ -5,7 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
-import Canvas from '../components/Canvas';
+import LayoutContainer from '../layout/Layout';
+import Canvas, { Drawing } from '../components/Canvas';
 import ColorPicker from '../components/ColorPicker';
 import BrushSizePicker from '../components/BrushSizePicker';
 import SaveDrawingButton from '../components/buttons/SaveDrawingButton';
@@ -28,10 +29,6 @@ const Container = styled.div`
   grid-template-columns: min-content auto;
   grid-template-rows: min-content 500px;
   // TODO: Change this to stretch to entire window once the dynamic Canvas width/height issue is solved
-  width: 70em;
-  margin: 0 auto;
-  box-shadow: 0 0.25em 0.5em 0 hsla(0, 0%, 0%, 0.08);
-  border-radius: 0.5em;
 `;
 
 const ContextMenuArea = styled.div`
@@ -66,7 +63,7 @@ const CanvasArea = styled.div`
 
 // Adds ability to create a file with the contents of the drawing represented as JSON
 // Source: https://stackoverflow.com/a/53449590/1626678
-function downloadDrawing(drawing: string | undefined) {
+function downloadDrawing(drawing: Drawing) {
   if (!drawing) return;
 
   const fileData = JSON.stringify(drawing);
@@ -80,10 +77,14 @@ function downloadDrawing(drawing: string | undefined) {
   link.click();
 }
 
-function Paint(): React.ReactElement {
+interface PaintProps {
+  drawing: Drawing;
+  setDrawing: (drawing: Drawing) => void;
+}
+
+function Paint({ drawing, setDrawing }: PaintProps): React.ReactElement {
   const [color, setColor] = useState<RGBColor>(DEFAULT_RGBA);
   const [brushSize, setBrushSize] = useState<number>(2);
-  const [drawing, setDrawing] = useState<string | undefined>(undefined);
 
   const getOpacity = useCallback(() => {
     const alpha = color?.a ?? 1;
@@ -92,26 +93,28 @@ function Paint(): React.ReactElement {
   }, [color.a]);
 
   return (
-    <Container>
-      <ContextMenuArea>
-        <Typography>Selected Brush Size: {brushSize}px</Typography>
-        <Typography>Selected Colour:</Typography>
-        <Tooltip title={getCSSColorFromRGBColor(color)} placement='top'>
-          <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
-        </Tooltip>
-        <Typography>Selected Opacity: {getOpacity()}</Typography>
-      </ContextMenuArea>
-      <ToolbarArea>
-        <ToolbarContainer>
-          <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
-          <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
-          <SaveDrawingButton onClick={() => downloadDrawing(drawing)} />
-        </ToolbarContainer>
-      </ToolbarArea>
-      <CanvasArea>
-        <Canvas color={color} brushSize={brushSize} onChange={setDrawing} />
-      </CanvasArea>
-    </Container>
+    <LayoutContainer>
+      <Container>
+        <ContextMenuArea>
+          <Typography>Selected Brush Size: {brushSize}px</Typography>
+          <Typography>Selected Colour:</Typography>
+          <Tooltip title={getCSSColorFromRGBColor(color)} placement='top'>
+            <FiberManualRecordIcon htmlColor={getCSSColorFromRGBColor(color)} />
+          </Tooltip>
+          <Typography>Selected Opacity: {getOpacity()}</Typography>
+        </ContextMenuArea>
+        <ToolbarArea>
+          <ToolbarContainer>
+            <BrushSizePicker brushSize={brushSize} onChange={setBrushSize} />
+            <ColorPicker color={color} onChange={({ rgb }) => setColor(rgb)} />
+            <SaveDrawingButton onClick={() => downloadDrawing(drawing)} />
+          </ToolbarContainer>
+        </ToolbarArea>
+        <CanvasArea>
+          <Canvas color={color} brushSize={brushSize} onChange={setDrawing} />
+        </CanvasArea>
+      </Container>
+    </LayoutContainer>
   );
 }
 

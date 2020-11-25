@@ -1,13 +1,22 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { RGBColor } from 'react-color';
 import { fabric } from 'fabric';
 
 import getCSSColorFromRGBColor from '../utils/get-css-color-from-rgb-color';
 
+export type DrawingObject = {
+  stroke: string;
+  width: number;
+  strokeWidth: number;
+};
+
+// Because Fabric says that a drawing can be "any", I'm defining the type as much as I know about it here
+export type Drawing = { version?: string; objects?: Partial<DrawingObject[]> };
+
 interface CanvasProps {
   color: RGBColor;
   brushSize: number;
-  onChange: (drawing?: string) => void;
+  onChange: (drawing: Drawing) => void;
 }
 
 function Canvas({
@@ -21,16 +30,16 @@ function Canvas({
   useEffect(() => {
     if (!canvasRef?.current) return;
 
-    const canvas = new fabric.Canvas(canvasRef.current, {
-      isDrawingMode: true,
-      freeDrawingCursor: 'round',
-      fill: getCSSColorFromRGBColor(color),
-      width: 1022,
-      height: 500,
-    });
-
-    setCanvas(canvas);
-  }, [canvasRef]);
+    setCanvas(
+      new fabric.Canvas(canvasRef.current, {
+        isDrawingMode: true,
+        freeDrawingCursor: 'round',
+        fill: getCSSColorFromRGBColor(color),
+        width: 1022,
+        height: 500,
+      })
+    );
+  }, []);
 
   // const ref = useFabric(color);
 
@@ -40,7 +49,13 @@ function Canvas({
     if (!canvas) return;
 
     function saveDrawing() {
-      onChange(canvas?.toJSON());
+      console.log('saving the canvas');
+      if (!canvas) {
+        debugger;
+        return;
+      }
+
+      onChange(canvas.toObject());
     }
 
     // Bind events to save the drawing whenever something is added on the canvas
@@ -66,14 +81,14 @@ function Canvas({
     setCanvas(canvas);
   }, [brushSize]);
 
-  useEffect(() => {
-    if (!canvas) return;
+  // useEffect(() => {
+  //   if (!canvas) return;
 
-    console.log('canvas information');
+  //   console.log('canvas information');
 
-    console.log(canvas.freeDrawingBrush.width);
-    console.log(canvas.freeDrawingBrush.color);
-  });
+  //   console.log(canvas.freeDrawingBrush.width);
+  //   console.log(canvas.freeDrawingBrush.color);
+  // });
 
   return <canvas ref={canvasRef} id='paint-canvas' />;
 }
