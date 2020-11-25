@@ -111,7 +111,12 @@ function Paint({ drawing, setDrawing }: PaintProps): React.ReactElement {
           </ToolbarContainer>
         </ToolbarArea>
         <CanvasArea>
-          <Canvas color={color} brushSize={brushSize} onChange={setDrawing} />
+          <Canvas
+            color={color}
+            brushSize={brushSize}
+            onChange={setDrawing}
+            initialDrawing={drawing}
+          />
         </CanvasArea>
       </Container>
     </LayoutContainer>

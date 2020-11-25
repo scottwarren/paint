@@ -17,12 +17,14 @@ interface CanvasProps {
   color: RGBColor;
   brushSize: number;
   onChange: (drawing: Drawing) => void;
+  initialDrawing: Drawing;
 }
 
 function Canvas({
   color,
   brushSize,
   onChange,
+  initialDrawing,
 }: CanvasProps): React.ReactElement {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState<fabric.Canvas>();
@@ -38,20 +40,24 @@ function Canvas({
       height: 500,
     });
 
+    if (initialDrawing) {
+      newCanvas.loadFromJSON(initialDrawing, () => {
+        console.log('loaded canvas');
+      });
+    }
+
     // Bind events to save the drawing whenever something is added on the canvas
     // newCanvas.on('object:added', saveDrawing);
     // newCanvas.on('object:modified', saveDrawing);
     // newCanvas.on('object:removed', saveDrawing);
     newCanvas.on('mouse:up', () => {
-      {
-        console.log('saving the canvas');
-        if (!newCanvas) {
-          debugger;
-          return;
-        }
-
-        onChange(newCanvas.toObject());
+      console.log('saving the canvas');
+      if (!newCanvas) {
+        debugger;
+        return;
       }
+
+      onChange(newCanvas.toObject());
     });
 
     setCanvas(newCanvas);
