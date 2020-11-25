@@ -7,7 +7,7 @@ import {
 
 import Popover from '@material-ui/core/Popover';
 
-import ColorSwatchButton from './ColorSwatchButton';
+import ColorSwatchButton from './buttons/ColorSwatchButton';
 
 // ReactColorPickerProps allows the color to be HSL/RGB/string/undefined
 // but we convert the color from RGBColor to an rgba string. which means
