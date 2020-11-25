@@ -26,7 +26,10 @@ function Canvas({
       isDrawingMode: true,
       freeDrawingCursor: 'round',
       fill: getCSSColorFromRGBColor(color),
+      width: 1022,
+      height: 500,
     });
+
     setCanvas(newCanvas);
   }, []);
 
@@ -46,8 +49,7 @@ function Canvas({
     setCanvas(canvas);
   }, [brushSize]);
 
-  // TODO: Solve dynamic/stretch width and height of the canvas
-  return <canvas id='paint-canvas' width={1022} height={500} />;
+  return <canvas id='paint-canvas' />;
 }
 
 export default Canvas;
